@@ -1,0 +1,9 @@
+<table id="user_history_table" class="w3-table w3-bordered">
+    <tr><th>Время загадывания </th><th>Число</th></tr>
+    {% for item in userHis %}
+        <tr>
+            <td>{{ item.createDate }}</td>
+            <td>{{ item.userValue }}</td>
+        </tr>
+    {% endfor %}
+ </table>

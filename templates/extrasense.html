@@ -1,0 +1,26 @@
+<div class="w3-pannel w3-center">
+    <h2 class="w3-opacity">Ответы экстрасенсов</h2>
+</div>
+<div class="w3-cell-row">
+    {%  for item in extData %}
+       <div class="w3-container w3-cell w3-margin-right">
+        <div class="w3-card ">
+          <header class="w3-container w3-blue"><h3>{{ item.name }}</h3></header>
+          <div class="w3-container">
+              <p>Число экстрасенса : {{ item.answer }} </p>
+          </div>
+        </div>
+       </div>
+    {% endfor %}
+</div>
+<div class="w3-contaner w3-center">
+    <h3>Ваше загаданное число</h3>
+</div>
+<div class="w3-container w3-center">
+    <form id="user_number_form"  method="post">
+        <label class="w3-text-blue">Загаданное число</label>
+        <input class="w3-input w3-border" type="text" name="number">
+        <br>
+        <button class="w3-btn w3-round-xlarge w3-border w3-border-blue">Подтвердить</button>
+    </form>
+</div>

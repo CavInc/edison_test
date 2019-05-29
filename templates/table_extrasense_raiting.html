@@ -1,0 +1,8 @@
+<table id="extrasens_rating" class="w3-table w3-bordered">
+    <tr><th>Экстрасенс</th><th>Уровень</th></tr>
+    {% for item in expCredibility %}
+        <tr>
+            <td>{{  item.name }}</td><td>{{ item.val }}</td>
+        </tr>
+    {% endfor %}
+</table>
