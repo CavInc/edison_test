@@ -19,7 +19,6 @@ def index():
     if 'username' in session:
         print "YES"
         print session.viewkeys()
-        #session.pop('username')
     else :
         print "NO"
         name = str(uuid.uuid4())
@@ -44,6 +43,10 @@ def getUserHistory():
 def getExtrasenseRaiting():
     return pages.getExtrasenseRaiting()
 
+@app.route('/api/extrasense_history',methods=['POST'])
+def getExtrasenseHistory():
+    res = pages.getExtrasenseHistory(session['username'])
+    return render_template("table_extra_his.html",expHistory = res)
 
 if __name__ == '__main__':
     app.debug = True

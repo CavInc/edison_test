@@ -14,7 +14,14 @@ function refreshUserHistory() {
 }
 
 function refreshExtrasensHistory() {
-    
+    $.ajax({
+        url:"api/extrasense_history",
+        type:"POST"
+    }).done(function (data) {
+        $("#table_exp_his").html(data)
+    }).fail(function (xhr, status, errorThrown) {
+        console.log(errorThrown);
+    });
 }
 
 function refreshExtrasens() {
@@ -41,6 +48,7 @@ function sendUserNumber(event) {
 
         refreshExtrasens();
         refreshUserHistory();
+        refreshExtrasensHistory();
 
         $("#number_set").click(getExtrasense);
     }).fail(function (xhr, status, errorThrown){

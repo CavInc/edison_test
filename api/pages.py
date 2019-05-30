@@ -106,3 +106,4 @@ def getExtrasenseRaiting():
     expCredibility =  extrasense.getCredibilityAll()
 
     return render_template("table_extrasense_raiting.html",expCredibility = expCredibility)
+
