@@ -13,9 +13,11 @@ def index(username):
     expCredibility =  extrasense.getCredibilityAll()
 
     userHis = getUserHistory(username)
+    expHis = getExtrasenseHistory(username)
 
-    return render_template('index.html',expCredibility = expCredibility,userHis = userHis)
+    return render_template('index.html',expCredibility = expCredibility,userHis = userHis,expHistory = expHis)
 
+# возвращаем ответы экстрасенсов
 def getExtrasenseAnswer(user=None):
     extrasense = Extrasens()
     count_ext  = random.randint(2,6) # количество экстрасеносв ответивших
@@ -56,19 +58,49 @@ def setUserNumber(request,user):
     now = datetime.datetime.now()
     userHis.append({"userValue":num,"createDate":now.strftime("%d-%m-%Y %H:%M")})
     res = memcash.set("userHistory_"+user,userHis)
-    memcash.delete("answer_"+user)
 
+    [x.pop('name') for x in answer] # удаляем из ответов лишнее
+    extAnser = {}
+    extAnser['answer'] = answer
+    extAnser['createDate'] = now.strftime("%d-%m-%Y %H:%M")
+    res = memcash.get("answerExtrasens_" + user)
+    if res == None :
+        res = []
+    res.append(extAnser)
+    memcash.set("answerExtrasens_"+user,res)
+
+    memcash.delete("answer_"+user)
     return render_template("start.html")
 
-def getExtrasenseHistory():
-    pass
+'''
+   возвращаем историю ответов экстрасенсов
+'''
+def getExtrasenseHistory(user):
+    memcash = MemcachedDB()
+    res = memcash.get("answerExtrasens_"+user)
+    print res
+    if res == None:
+        res = []
+    res.reverse()
+    out = []
+    for l in res:
+        dt = l['createDate']
+        ans = [x['id'].replace('extrasens_',u'Экстрасенс ')+' : '+str(x['answer']) for x in l['answer']]
+        ans = ' / '.join(ans)
+        out.append({'createDate':dt,'answer':ans})
+    return out
 
+# история загаданных чисел пользователя
 def getUserHistory(user):
     memcash = MemcachedDB()
     res = memcash.get("userHistory_" + user)
-    res.reverse()
+    if res != None :
+        res.reverse()
+    else :
+        res = []
     return res
 
+# рейтинги экстрасенсов
 def getExtrasenseRaiting():
     extrasense = Extrasens()
     expCredibility =  extrasense.getCredibilityAll()
